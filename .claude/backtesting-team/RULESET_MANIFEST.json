@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "generated_rules": [],
+  "deferred_or_rejected": [
+    {
+      "name": "experiments-append-only",
+      "reason": "unknown path - no experiments/results directory exists to scope a glob to (FOUNDATION_MODE)"
+    },
+    {
+      "name": "holdout-read-restriction",
+      "reason": "better as agent authority - encoded in bt-hypothesis-researcher, bt-experiment-designer, and bt-team-orchestrator's Non-authority sections instead; also no holdout path exists yet"
+    },
+    {
+      "name": "protocol-immutability",
+      "reason": "better as agent authority - encoded in bt-backtest-engineer and bt-experiment-integrity-reviewer's Non-authority sections instead; also no protocol/config path exists yet"
+    }
+  ]
+}

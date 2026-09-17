@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "generated_skills": [
+    {
+      "name": "temporal-leakage-audit",
+      "path": ".claude/skills/temporal-leakage-audit/SKILL.md",
+      "purpose": "Checklist-driven audit of feature/label timing and train/test split purging against López de Prado's leakage framework",
+      "kind": "procedural",
+      "preload_agents": [],
+      "on_demand_agents": ["bt-feature-label-methodologist", "bt-experiment-designer", "bt-experiment-integrity-reviewer"],
+      "forbidden_for_approval_agents": ["bt-experiment-integrity-reviewer"],
+      "non_authority": "Cannot certify experiment integrity or approve promotion; produces an inspection table only",
+      "research_section": "Candidate: temporal-leakage-audit"
+    },
+    {
+      "name": "execution-cost-realism-check",
+      "path": ".claude/skills/execution-cost-realism-check/SKILL.md",
+      "purpose": "Checklist confirming a backtest's fill/fee/spread/slippage/impact/funding assumptions are declared and justified",
+      "kind": "procedural",
+      "preload_agents": [],
+      "on_demand_agents": ["bt-execution-microstructure-specialist", "bt-backtest-engineer"],
+      "forbidden_for_approval_agents": [],
+      "non_authority": "Cannot certify that returns are realistic overall, only that the cost model is declared and internally justified",
+      "research_section": "Candidate: execution-cost-realism-check"
+    },
+    {
+      "name": "multiple-testing-correction",
+      "path": ".claude/skills/multiple-testing-correction/SKILL.md",
+      "purpose": "Deterministically applies Bonferroni or Benjamini-Hochberg FDR correction to a set of trial p-values",
+      "kind": "executable",
+      "preload_agents": [],
+      "on_demand_agents": ["bt-statistical-reviewer"],
+      "forbidden_for_approval_agents": ["bt-experiment-integrity-reviewer"],
+      "non_authority": "Cannot decide which correction method fits the study design, and cannot certify experiment integrity",
+      "research_section": "Candidate: multiple-testing-correction"
+    },
+    {
+      "name": "reproducibility-manifest",
+      "path": ".claude/skills/reproducibility-manifest/SKILL.md",
+      "purpose": "Deterministically fingerprints code/config/data inputs into a hashed JSON manifest for later reproduction checks",
+      "kind": "executable",
+      "preload_agents": [],
+      "on_demand_agents": ["bt-backtest-engineer"],
+      "forbidden_for_approval_agents": ["bt-experiment-integrity-reviewer"],
+      "non_authority": "Cannot certify that a reproduction attempt actually matched; only fingerprints inputs",
+      "research_section": "Candidate: reproducibility-manifest"
+    },
+    {
+      "name": "evidence-report-formatter",
+      "path": ".claude/skills/evidence-report-formatter/SKILL.md",
+      "purpose": "Standardizes claim/evidence/limitation/status structure for final backtesting evidence reports",
+      "kind": "procedural",
+      "preload_agents": [],
+      "on_demand_agents": ["bt-evidence-reporter"],
+      "forbidden_for_approval_agents": [],
+      "non_authority": "Cannot upgrade any upstream gate status; formatting aid only",
+      "research_section": "Candidate: evidence-report-formatter"
+    }
+  ],
+  "rejected_candidates": [
+    {"name": "repository-scaffolding", "reason": "unsupported - generic coding helper with no backtesting-specific semantics"},
+    {"name": "git-commit-helper", "reason": "unsupported - generic coding helper with no backtesting-specific semantics"},
+    {"name": "vendor-specific-data-loader", "reason": "deferred - no vendor evidenced in FOUNDATION_MODE"},
+    {"name": "walk-forward-window-generator", "reason": "deferred - no data frequency/calendar convention evidenced"},
+    {"name": "stress-scenario-library", "reason": "deferred - asset-class-specific stress windows are an unsupported constant without repository/market evidence"}
+  ]
+}
