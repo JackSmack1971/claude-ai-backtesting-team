@@ -11,7 +11,7 @@ A formatting/discipline aid for `bt-evidence-reporter` only. This is an internal
 
 ## Inputs / prerequisites
 
-Every upstream handoff (per `references/handoff-contract.md`) that the report will draw on, each with its recorded `Status: PASS | FAIL | INCONCLUSIVE | BLOCKED`.
+Every upstream handoff (per `.claude/backtesting-team/references/handoff-contract.md`) that the report will draw on, each with its recorded `Status: PASS | FAIL | INCONCLUSIVE | BLOCKED`.
 
 ## Workflow
 

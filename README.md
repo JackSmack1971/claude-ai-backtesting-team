@@ -30,9 +30,74 @@ Claude Code discovers `.claude/agents/` and `.claude/skills/` automatically on t
     │   ├── BUILD_RESEARCH.md              Phase 4 — per-role research (all 12 roles)
     │   ├── SKILLSET_RESEARCH.md           Phase 5 — skill selection research
     │   └── RULESET_RESEARCH.md            Phase 6 — rule selection research (empty result)
+    ├── references/                        canonical handoff/blueprint/research-protocol docs
+    │   ├── handoff-contract.md
+    │   ├── team-blueprint.md
+    │   └── research-protocol.md
     ├── SKILLSET_MANIFEST.json
     └── RULESET_MANIFEST.json
+scripts/
+└── validate_repository.py           repository-local cross-layer validator
+tests/
+├── test_mtc.py                      black-box tests for multiple-testing-correction
+├── test_manifest.py                 black-box tests for reproducibility-manifest
+└── smoke_fixture/                   synthetic, non-trading fixture for the integration smoke test
 ```
+
+## Hardening pass (2026-09-17)
+
+A runtime/contract audit against actual repository state and current official
+Claude Code documentation found and fixed the following (full detail in each
+file's own diff / builder-provenance note):
+
+1. **On-demand skill invocation was broken.** 7 of 12 agents named an
+   on-demand skill in their body without listing `Skill` in their `tools:`
+   allowlist — current subagent tool-resolution semantics require `Skill` to
+   be explicitly present, or skill invocation is unavailable at runtime.
+   Fixed by adding `Skill` to each affected agent's `tools:` field.
+2. **`bt-team-orchestrator`'s subagent-restriction claim was false.** The
+   `Agent(role1, role2, ...)` parenthetical allowlist only restricts
+   spawnable subagent types when an agent runs as the *main session*
+   (`claude --agent`); for a normally-dispatched subagent (this orchestrator's
+   documented usage) the parenthetical is ignored entirely. The prompt has
+   been corrected to state this plainly and to carry the 12-role restriction
+   as an explicit prompt-level operating invariant instead of a false
+   runtime-enforcement claim.
+3. **Executable skill scripts assumed the shell cwd was the skill directory.**
+   Both `mtc.py` and `manifest.py` invocations now use
+   `${CLAUDE_SKILL_DIR}` so they resolve correctly from any working directory.
+4. **`reproducibility-manifest`'s canonical hash didn't bind protocol identity.**
+   `manifest_hash` previously covered only file content hashes; a changed
+   `note` (where protocol id/git commit were informally recorded) left the
+   hash unchanged. The script now has an explicit identity schema
+   (`protocol_id`, `seed`, `git_commit`, `git_dirty`, `dependencies_hash`,
+   `runtime`, `files`) bound into `manifest_hash`, with `generated_at_unix`
+   and `note` explicitly excluded as non-identity metadata.
+5. **No tests existed for either executable skill.** Added
+   `tests/test_mtc.py` and `tests/test_manifest.py` (34 black-box tests
+   total, run via subprocess against the actual scripts from arbitrary cwds).
+6. **Multiple-testing correction risked being read as resolving selection
+   bias generally.** Added explicit scope-boundary language to
+   `multiple-testing-correction/SKILL.md` and `bt-statistical-reviewer.md`
+   distinguishing generic Bonferroni/BH-FDR correction from
+   backtest-selection-bias methodology (Deflated Sharpe Ratio, Probability
+   of Backtest Overfitting), which this build does not implement.
+7. **Packaging placeholders remained** (`.claude/rules/Placeholder` and four
+   skill-level `placeholder`/`Placeholder` files). Removed.
+8. **Three research citations were labeled `primary-research` despite only a
+   secondary summary having actually been inspected** (López de Prado 2018;
+   Bailey & López de Prado 2012/2014; Harvey/Liu/Zhu 2016). Relabeled
+   `secondary` with an explicit "source cited" vs. "source actually
+   inspected" split, and the exact narrower claim each source actually
+   supports.
+9. **12 agent/skill files cited `references/handoff-contract.md`,
+   `references/team-blueprint.md`, and `references/research-protocol.md` —
+   none of which existed in this repository.** Created
+   `.claude/backtesting-team/references/` with all three, consolidating
+   content that was previously only duplicated/implicit across the agent
+   files, and repointed every citation to the real path.
+10. Added `scripts/validate_repository.py` (14 cross-layer checks) and
+    `tests/smoke_fixture/` (a synthetic, non-trading integration fixture).
 
 ## The 12-role core
 
@@ -58,13 +123,23 @@ Once this is dropped into a real repository, re-invoke `/ai-backtesting-team-bui
 ## Validation
 
 ```
+$ python3 scripts/validate_repository.py
+RESULT: PASS (14 checks)
+```
+
+`scripts/validate_repository.py` is this repository's own local validator (added in the 2026-09-17 hardening pass — see "Hardening pass" below): it parses every agent/skill frontmatter, checks that every on-demand skill assignment has an actual `Skill`-tool invocation path, checks executable-skill script paths resolve via `${CLAUDE_SKILL_DIR}` from an arbitrary cwd, checks manifest↔filesystem↔agent-prompt consistency, checks for placeholder artifacts and unresolved `references/*.md` citations, and checks that the independent-review boundary and the orchestrator's corrected tool-policy claim are intact. Run it after any edit to `.claude/agents/`, `.claude/skills/`, or the manifests.
+
+Executable-skill scripts additionally have their own black-box test suites: `python3 tests/test_mtc.py` and `python3 tests/test_manifest.py` (documented success path, malformed input, CLI misuse, deterministic repeatability, boundary cases, output schema, documented exit codes, arbitrary-cwd invocation, and SKILL.md↔implementation contract consistency).
+
+There is no `claude plugin validate` command in the current CLI (checked against `claude` 2.1.275; `claude plugin --help` lists no `validate` subcommand, and this directory isn't packaged with a `plugin.json` for `claude plugin details`/`eval` to apply to). The original build's claim that such a command was the "official" validation path was itself inaccurate and has been corrected here rather than repeated.
+
+Historical (original-build) snapshot, kept for provenance only — not re-verified as an independent claim:
+```
 BACKTESTING_BUILD_VALIDATION=PASS
 agents=12/12
 skills=5
 rules=0
 ```
-
-Produced by `scripts/validate_build.py` (bundled with the `ai-backtesting-team-builder` skill). Official `claude plugin validate .claude/skills` was not run — the `claude` CLI is not available in the environment this build ran in; run it yourself after installing, per the skill's Phase 11 instructions.
 
 ## Deviations from builder defaults
 

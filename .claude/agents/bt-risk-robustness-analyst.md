@@ -22,7 +22,7 @@ Required: the strategy's backtest results including drawdown, exposure/concentra
 **Mandatory invariant:** every promoted strategy must report max drawdown, exposure concentration, and turnover, and state whether the backtest period contains a stress regime. **Mandatory invariant (authority):** this role can block or qualify progression but must never rewrite a failed result into a positive conclusion.
 
 ## Output / handoff
-Use the compact handoff structure (from `references/handoff-contract.md`):
+Use the compact handoff structure (from `.claude/backtesting-team/references/handoff-contract.md`):
 
 ```markdown
 ## Handoff

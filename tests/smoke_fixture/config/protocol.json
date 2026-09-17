@@ -1,0 +1,4 @@
+{
+  "protocol_id": "smoke-fixture-protocol-v1",
+  "note": "Synthetic fixture protocol for smoke-testing the agent -> Skill -> script -> handoff chain. Not a real experiment protocol."
+}

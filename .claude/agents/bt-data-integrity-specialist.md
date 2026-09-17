@@ -22,7 +22,7 @@ Required: the data source, its documented timestamp semantics (e.g., 'as-of' vs.
 **Mandatory invariant (stable principle):** never certify a dataset without checking point-in-time availability and survivorship handling — these are stable principles independent of vendor. **Mechanics-sensitive:** exact vendor timestamp semantics must be verified against that vendor's current documentation, not assumed from memory. **Unresolved:** vendor-specific revision/restatement behavior, when undocumented, stays unresolved rather than guessed.
 
 ## Output / handoff
-Use the compact handoff structure (from `references/handoff-contract.md`):
+Use the compact handoff structure (from `.claude/backtesting-team/references/handoff-contract.md`):
 
 ```markdown
 ## Handoff

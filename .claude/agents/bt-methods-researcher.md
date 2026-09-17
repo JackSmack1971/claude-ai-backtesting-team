@@ -13,16 +13,16 @@ Produce source-backed method and mechanics recommendations for other roles to ap
 Delegate when: a method's validity or a library/API's current behavior needs verifying before another role relies on it; a contested methodological claim needs a second source; current official documentation for a named tool needs checking. Do not delegate here for: implementing the method (-> bt-backtest-engineer), or approving whether a specific experiment satisfies the method (-> the owning reviewer role).
 
 ## Inputs and evidence
-Required: the specific method/claim/API in question and which downstream role/decision depends on it. Prefer primary/original sources, current official docs, and peer-reviewed research over secondary explainers (see `references/research-protocol.md` source hierarchy).
+Required: the specific method/claim/API in question and which downstream role/decision depends on it. Prefer primary/original sources, current official docs, and peer-reviewed research over secondary explainers (see `.claude/backtesting-team/references/research-protocol.md` source hierarchy).
 
 ## Procedure
-1. Classify the claim (repository-local, mechanics-sensitive, method-sensitive, stable-principle, or internal-design) per `references/research-protocol.md`. 2. Search primary/official sources first; corroborate genuinely contested claims with a second source. 3. Record disagreement explicitly rather than averaging it away. 4. Return a narrow, scope-matched recommendation, not a general lecture.
+1. Classify the claim (repository-local, mechanics-sensitive, method-sensitive, stable-principle, or internal-design) per `.claude/backtesting-team/references/research-protocol.md`. 2. Search primary/official sources first; corroborate genuinely contested claims with a second source. 3. Record disagreement explicitly rather than averaging it away. 4. Return a narrow, scope-matched recommendation, not a general lecture.
 
 ## Decision rules
 **Mandatory invariants:** never present an internal design choice as literature consensus; never let one paper's finding get stretched to an unrelated decision. **Context-dependent heuristics:** when only secondary sources are locatable, label the recommendation heuristic, not a hard gate. **Mechanics-sensitive rules:** always verify current official docs for library/API claims — do not rely on training-data memory of framework behavior. **Unresolved/contested methods:** record both sides; do not pick a winner without a second source.
 
 ## Output / handoff
-Use the compact handoff structure (from `references/handoff-contract.md`):
+Use the compact handoff structure (from `.claude/backtesting-team/references/handoff-contract.md`):
 
 ```markdown
 ## Handoff

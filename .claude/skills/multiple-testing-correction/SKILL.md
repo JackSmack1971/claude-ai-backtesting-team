@@ -20,7 +20,7 @@ If the true trial count is contested or unknown, this skill cannot run meaningfu
 ## Workflow
 
 1. Assemble the full trial list as `{"trials": [{"id": ..., "p_value": ...}, ...]}` (see `scripts/mtc.py` docstring for the exact schema), or pass p-values inline.
-2. Run: `python3 scripts/mtc.py --method <bonferroni|bh> --alpha <value> --input trials.json` (or `--pvalues v1 v2 ...` for a quick inline check).
+2. Run: `python3 "${CLAUDE_SKILL_DIR}/scripts/mtc.py" --method <bonferroni|bh> --alpha <value> --input trials.json` (or `--pvalues v1 v2 ...` for a quick inline check). Always invoke via `${CLAUDE_SKILL_DIR}` — the current working directory is the session's working directory, not this skill's directory, so a bare `scripts/mtc.py` path resolves incorrectly except by coincidence.
 3. Read the JSON result: `threshold` (Bonferroni only), and per-trial `reject_null` flags with `n_significant` total.
 4. Report the result verbatim to the calling agent; do not hand-recompute or round the script's output.
 
@@ -37,6 +37,8 @@ The script's JSON output (method, alpha, n_trials, threshold, per-trial results,
 ## Safety / non-authority
 
 This skill cannot decide whether Bonferroni or BH-FDR is the right choice for a given study design — `bt-statistical-reviewer` makes that call. It cannot certify experiment integrity; `bt-experiment-integrity-reviewer` must independently verify the trial count fed into this script was the true, complete trial count, not merely accept that the script ran.
+
+**Scope boundary (do not conflate):** Bonferroni and Benjamini-Hochberg are generic, distribution-agnostic p-value corrections for a *known, disclosed* set of trials. They are not a substitute for backtest-specific selection-bias methodology — in particular the Probabilistic/Deflated Sharpe Ratio (Bailey & López de Prado 2012/2014) and the Probability of Backtest Overfitting (Bailey, Borwein, López de Prado & Zhu 2017), which additionally model the variance and non-normality of the searched Sharpe-ratio distribution itself, not just a list of p-values. Running this script and getting a clean result does **not** establish that strategy-search/selection bias has been addressed; it only corrects the disclosed trial count's p-values for multiple comparisons. `bt-statistical-reviewer` must record separately whether DSR/PBO-style analysis was needed for this study and, if so, that it was performed elsewhere (this skill does not implement it).
 
 ## Builder provenance
 

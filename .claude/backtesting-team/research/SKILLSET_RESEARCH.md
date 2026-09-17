@@ -1,5 +1,7 @@
 # Skillset Research
 
+> **Provenance note:** citations below to `skill-selection.md` / `skill-contract.md` refer to the `ai-backtesting-team-builder` skill's own bundled authoring-contract docs (used during generation), not to files shipped in this output repository. They are not runtime references any `bt-*` agent or generated skill needs to open.
+
 Mode: `FOUNDATION_MODE`. No repository-native commands or scripts exist to wrap, so no candidate scores on "reuse an existing repository tool." Candidates below are scored on the general workflow/risk/reuse dimensions from `skill-selection.md`'s coverage prompt, using the evidence recorded in `BUILD_RESEARCH.md`.
 
 Score legend: 0–3 each on frequency, complexity, risk, cross-role reuse, determinism leverage, routing distinctiveness, context efficiency. Default inclusion requires `frequency + complexity + risk >= 6` AND at least one of {cross-role reuse, determinism leverage, routing distinctiveness} `>= 2`.

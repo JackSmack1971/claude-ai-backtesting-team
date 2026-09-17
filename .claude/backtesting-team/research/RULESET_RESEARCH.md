@@ -1,5 +1,7 @@
 # Ruleset Research
 
+> **Provenance note:** citations below to `rule-selection.md` / `rule-contract.md` / `ruleset-manifest-contract.md` refer to the `ai-backtesting-team-builder` skill's own bundled authoring-contract docs (used during generation), not to files shipped in this output repository.
+
 Mode: `FOUNDATION_MODE`.
 
 ## Candidate discovery

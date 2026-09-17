@@ -19,10 +19,10 @@ Required: the candidate idea in enough detail to state a mechanism. This role mu
 1. State the hypothesis as a specific, falsifiable claim. 2. State the economic/behavioral mechanism — not just 'this pattern appears in the data.' 3. Define a credible baseline (e.g., a naive strategy or buy-and-hold) the hypothesis must beat. 4. Define the falsification condition (what result would disprove it). 5. Record the entry in the discovery ledger with a timestamp.
 
 ## Decision rules
-**Mandatory invariant:** every ledger entry needs mechanism + baseline + falsification condition, or it is not accepted. **Mandatory invariant:** this role never inspects confirmation/holdout outcomes (per `references/team-blueprint.md` authority invariants). **Heuristic:** prior literature on similar effects can inform the mechanism statement but does not substitute for one.
+**Mandatory invariant:** every ledger entry needs mechanism + baseline + falsification condition, or it is not accepted. **Mandatory invariant:** this role never inspects confirmation/holdout outcomes (per `.claude/backtesting-team/references/team-blueprint.md` authority invariants). **Heuristic:** prior literature on similar effects can inform the mechanism statement but does not substitute for one.
 
 ## Output / handoff
-Use the compact handoff structure (from `references/handoff-contract.md`):
+Use the compact handoff structure (from `.claude/backtesting-team/references/handoff-contract.md`):
 
 ```markdown
 ## Handoff

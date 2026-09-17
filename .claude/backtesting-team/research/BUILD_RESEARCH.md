@@ -5,37 +5,40 @@ Mode: `FOUNDATION_MODE`. No repository exists, so "repository application" secti
 Shared evidence base for this document:
 
 ### Source: Advances in Financial Machine Learning
-- Publisher/author: Marcos López de Prado, Wiley, 2018
-- URL: (book; referenced via https://philpapers.org/rec/LPEAIF and corroborating summaries at https://en.wikipedia.org/wiki/Purged_cross-validation and https://www.garp.org/hubfs/Whitepapers/a1Z1W0000054x6lUAA.pdf, López de Prado's own 2017 working paper "The 10 Reasons Most Machine Learning Funds Fail")
+- Source cited: Marcos López de Prado, *Advances in Financial Machine Learning*, Wiley, 2018 (chs. 7 & 12)
+- Source actually inspected: the primary book itself was **not** fetched/read by this build. What was actually inspected: a philpapers.org bibliographic record (https://philpapers.org/rec/LPEAIF), the Wikipedia "Purged cross-validation" summary page (https://en.wikipedia.org/wiki/Purged_cross-validation), and a GARP whitepaper summarizing the book's chapters (https://www.garp.org/hubfs/Whitepapers/a1Z1W0000054x6lUAA.pdf).
 - Accessed: 2026-09-17
-- Source class: primary-research
+- Source class: **secondary** (corrected — see "Source actually inspected"; the original book was not itself inspected, so this must not be labeled `primary-research` on the strength of the book's existence alone, per `references/research-protocol.md`)
 - Claim class: method-sensitive
-- Relevant claim: k-fold cross-validation on overlapping, serially-correlated financial labels leaks information between train and test folds; purging (removing training observations whose label window overlaps the test window) and embargoing (dropping a buffer of training observations immediately after each test block) are the corrective procedures; walk-forward validation is the most common backtest method and is leakage-safe only if purging is correctly implemented.
+- Exact supported claim: the secondary sources consistently and specifically describe López de Prado's purging (removing training observations whose label window overlaps the test window) and embargoing (a buffer after each test block) procedures for leakage-safe cross-validation on serially-correlated, overlapping financial labels; this is a stable, widely-corroborated restatement across independent secondary sources, not a single unverified claim.
+- Scope/limitations: the exact embargo-width formula, edge-case handling, and any caveats stated only in the book's full text (not reproduced in the summaries) were not verified. A future repository-specific build with access to the primary text should re-verify against it directly before treating any formula-level detail (not just the purge/embargo principle) as settled.
 - Applies to: `bt-feature-label-methodologist`, `bt-experiment-designer`, `bt-backtest-engineer`, `bt-experiment-integrity-reviewer`, temporal-leakage-audit skill
-- Design consequence: these roles treat "does every prediction use only information available at decision time, with any train/test split purged and embargoed against label overlap" as a hard gate, not a heuristic.
-- Limitations/disagreement: none found; this is the dominant reference in the field, and the underlying serial-correlation argument is elementary and uncontested.
+- Design consequence: these roles treat "does every prediction use only information available at decision time, with any train/test split purged and embargoed against label overlap" as a hard gate (SUPPORTED as a stable principle); exact embargo width remains explicitly UNRESOLVED/data-frequency-dependent, consistent with the scope limitation above.
+- Limitations/disagreement: none found on the core principle across the secondary sources consulted; the principle-vs-formula distinction above is the main correction to this entry.
 
 ### Source: The Probabilistic Sharpe Ratio / The Deflated Sharpe Ratio
-- Publisher/author: David H. Bailey & Marcos López de Prado (2012, 2014)
-- URL: referenced via https://www.quantresearch.org/Innovations.htm and corroborating summary at https://github.com/eslazarev/purged-cross-validation/blob/main/paper/paper.md
+- Source cited: David H. Bailey & Marcos López de Prado, "The Probabilistic Sharpe Ratio" (2012) and "The Deflated Sharpe Ratio" (2014)
+- Source actually inspected: the original papers were **not** fetched/read by this build. What was actually inspected: the author's own site's publication list (https://www.quantresearch.org/Innovations.htm, a listing/abstract page, not the paper text) and a secondary summary in a third-party JOSS-style paper draft (https://github.com/eslazarev/purged-cross-validation/blob/main/paper/paper.md).
 - Accessed: 2026-09-17
-- Source class: primary-research
+- Source class: **secondary** (corrected — a listing page and a third-party summary were inspected, not the papers themselves)
 - Claim class: method-sensitive
-- Relevant claim: a Sharpe ratio estimated after searching over N independent trials is biased upward; the Deflated Sharpe Ratio corrects the significance threshold for the number of trials and their variance, giving the probability that a strategy's true Sharpe ratio exceeds zero after accounting for multiple testing and non-normal returns.
+- Exact supported claim: the secondary sources consistently describe that a Sharpe ratio estimated after searching over N trials is upward-biased, and that the Deflated Sharpe Ratio corrects the significance threshold for trial count and variance. The exact deflation formula and its derivation were not independently verified from the primary text.
+- Scope/limitations: this build does not implement DSR/PSR (no bundled script exists for it — see `multiple-testing-correction`'s scope-boundary note distinguishing it from Bonferroni/BH); it is cited only to justify the mandatory trial-count-disclosure gate, which is the narrow claim the secondary sources support.
 - Applies to: `bt-statistical-reviewer`, `bt-experiment-integrity-reviewer`, multiple-testing-correction skill
-- Design consequence: any confirmation-stage performance claim reviewed by `bt-statistical-reviewer` must disclose the number of trials/configurations searched; a single held-out Sharpe ratio with no trial count disclosed is treated as `INCONCLUSIVE`, not `PASS`.
-- Limitations/disagreement: none found for the core claim; exact deflation formula parameters are technical detail the reviewer applies per study, not a universal constant this build encodes.
+- Design consequence: any confirmation-stage performance claim reviewed by `bt-statistical-reviewer` must disclose the number of trials/configurations searched; a single held-out Sharpe ratio with no trial count disclosed is treated as `INCONCLUSIVE`, not `PASS`. This design consequence is SUPPORTED by the secondary sources; DSR/PBO implementation itself is out of this build's scope, not merely unresolved.
+- Limitations/disagreement: none found for the core claim.
 
 ### Source: ...and the Cross-Section of Expected Returns
-- Publisher/author: Campbell R. Harvey, Yan Liu, Heqing Zhu (Review of Financial Studies, 2016)
-- URL: referenced via the purged-cross-validation JOSS paper draft (https://github.com/eslazarev/purged-cross-validation/blob/main/paper/paper.md), citing harvey2016
+- Source cited: Campbell R. Harvey, Yan Liu, Heqing Zhu, *Review of Financial Studies*, 2016
+- Source actually inspected: the original paper was **not** fetched/read by this build. What was actually inspected: a citation of "harvey2016" inside a third-party JOSS-style paper draft (https://github.com/eslazarev/purged-cross-validation/blob/main/paper/paper.md) — i.e., a secondary source's citation of the primary work, not the primary work's own text or abstract.
 - Accessed: 2026-09-17
-- Source class: primary-research
+- Source class: **secondary** (corrected — only a downstream citation was inspected, which is weaker provenance than inspecting even a secondary summary of the paper's own content, since no content from the paper itself was reviewed)
 - Claim class: method-sensitive
-- Relevant claim: hundreds of published "anomaly" factors are largely explainable by multiple-testing bias; the paper argues for materially higher significance bars (e.g., t-stat > 3) once the number of tested factors is accounted for.
+- Exact supported claim: limited to "a 2016 paper by these authors is cited elsewhere as arguing published anomaly factors are substantially explainable by multiple-testing bias, recommending higher significance bars." The specific t-stat>3 figure and its derivation were not independently verified.
+- Scope/limitations: this build does not rely on the exact numeric threshold from this paper for any hard gate (see design consequence below) — precisely because the threshold was never independently verified, only the general direction of the claim.
 - Applies to: `bt-statistical-reviewer`, `bt-experiment-integrity-reviewer`
-- Design consequence: `bt-statistical-reviewer`'s stop condition includes "search/trial count not disclosed" as a mandatory `INCONCLUSIVE`, independent of which correction formula is used.
-- Limitations/disagreement: the exact recommended threshold is debated in follow-up literature; this build does not universalize a single numeric cutoff (see research-protocol's "no unsupported constants" rule) and instead requires the reviewer to record whichever correction was used and why.
+- Design consequence: `bt-statistical-reviewer`'s stop condition includes "search/trial count not disclosed" as a mandatory `INCONCLUSIVE`, independent of which correction formula is used — this narrower claim is what the citation actually supports.
+- Limitations/disagreement: the exact recommended threshold is debated in follow-up literature and was not independently verified here; this build does not universalize a single numeric cutoff (see research-protocol's "no unsupported constants" rule) and instead requires the reviewer to record whichever correction was used and why.
 
 ### Source: Benjamini–Hochberg false discovery rate control
 - Publisher/author: Yoav Benjamini & Yosef Hochberg (Journal of the Royal Statistical Society B, 1995)
